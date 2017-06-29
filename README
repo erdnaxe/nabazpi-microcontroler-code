@@ -1,0 +1,19 @@
+# NabazPi Microcontroler code
+Inspired by : https://github.com/ccarlo64/nabaztag_raspberry/
+
+Connections (Ardiuno UNO/NANO) :
+	RFID Reader (I2C) :
+	 Brown -> 5V
+	 Red -> GND
+	 Orange -> A4 (SDA)
+	 Yellow -> A5 (SCL)
+
+	Top button :
+	 White -> GND
+	 Grey -> D2
+
+	Volume wheel :
+	 Brown -> GND
+	 Red -> A7
+	 Orange -> 5V
+
