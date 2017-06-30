@@ -17,8 +17,8 @@ class RFID {
   public:
     RFID(byte addr);
     void begin();  // Turn off and on to reset the device
-    byte detect();  // Detect if a tag is nearby
-    void read();  // Try to read the tag
+    bool detect();  // Detect if a tag is nearby
+    void read(byte *buffer);  // Try to read the tag
   private:
     byte _addr;
 };

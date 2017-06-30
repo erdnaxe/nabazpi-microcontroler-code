@@ -20,17 +20,34 @@ void loop() {
 
   // Head button
   if (headButton.getSingleDebouncedPress()) {
+    Serial.println("[BTN] Button pushed");
+    
+    Serial.print("[VOL] Volume wheel value : ");
     Serial.println(volumeSensorValue);
   }
 
+  // RFID reader
   if (rfid.detect()) {
-    Serial.println("RFID detected !");
-    rfid.read();
+    byte tag[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    rfid.read(tag);
+
+    if (tag[0] == 0) {
+      Serial.println("[RFID] read error !");
+    } else {
+      Serial.print("[RFID] your tag is : ");
+      for (int i=0; i<8; i++) {
+        String hexa = String(tag[i], HEX);
+        if (hexa.length() < 2) {
+          Serial.print("0");
+        }
+        Serial.print(hexa);
+        Serial.print(" ");
+      }
+      Serial.println("");
+    }
   }
 
   delay(50);
 }
-
-
 
 

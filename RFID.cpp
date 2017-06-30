@@ -22,7 +22,7 @@ void RFID::begin() {
   delay(50);
 }
 
-byte RFID::detect() {
+bool RFID::detect() {
   // Write initialisation sequence
   Wire.beginTransmission(_addr);
   Wire.write(RFID_REGISTER_FRAME);  // Move to register
@@ -35,20 +35,23 @@ byte RFID::detect() {
   Wire.write(RFID_REGISTER_FRAME);
   Wire.endTransmission();
   Wire.requestFrom(_addr, 1);
-  return Wire.read();
+  byte status = Wire.read();
+  if (status) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-void RFID::read() {
+void RFID::read(byte *buffer) {
   Wire.beginTransmission(_addr);
   Wire.write(RFID_REGISTER_SLOT);
   Wire.endTransmission();
-
   delay(50);
 
   Wire.beginTransmission(_addr);
   Wire.write(RFID_REGISTER_FRAME);
   Wire.endTransmission();
-
   byte tableChip[32];
   int i = 0;
   Wire.requestFrom(_addr, 32);
@@ -90,21 +93,15 @@ void RFID::read() {
           i++;
         }
 
-        // Convert to hexa
-        String tag;
-        for (int i=8; i>0; i--) {
-          String hexa = String(uid[i], HEX);
-          if (hexa.length() < 2) {
-            tag += "0";
-          }
-          tag += hexa;
+        for (int i=0; i<8; i++) {
+          buffer[i] = uid[8-i];
         }
-
-        //TODO Comment renvoyer le string sachant que c'est une taille fixe ? passer en char
-        Serial.print("Tag uid is : ");
-        Serial.println(tag);
+        
+        return;  // Restrict to one tag only
       }
       wordBitIdx >>= 1;
     }
   }
 }
+
+
