@@ -1,12 +1,17 @@
 #include <Pushbutton.h>
 #include <Wire.h>
-#include "RFID_CR14.h"
+#include "rfid_CR14.h"
+#include "led.h"
 
 #define PIN_HEAD_BTN 2  // must support interrupt
 #define PIN_VOL_WHEEL A7
+#define PIN_LED_R 9
+#define PIN_LED_G 10
+#define PIN_LED_B 11
 
 Pushbutton headButton(PIN_HEAD_BTN);
 RFID rfid(0x50);
+LED led_center(PIN_LED_R, PIN_LED_G, PIN_LED_B);
 
 unsigned int volumeSensorOldValue = 0;
 
@@ -14,6 +19,7 @@ void setup() {
   Serial.begin(9600);
   Wire.begin();
   rfid.begin();
+  led_center.begin();
 }
 
 void loop() {
@@ -23,6 +29,10 @@ void loop() {
     volumeSensorOldValue = volumeSensorValue;
     Serial.print("[VOL] Volume wheel value : ");
     Serial.println(volumeSensorValue);
+
+    // FOR DEMO
+    int led_r = map(volumeSensorValue, 0, 1024, 0, 255);
+    led_center.set(led_r, led_r, led_r);
   }
 
   // Head button

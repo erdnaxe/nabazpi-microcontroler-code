@@ -3,7 +3,7 @@
 // this code is public domain, enjoy!
 
 #include "Arduino.h"
-#include "RFID_CR14.h"
+#include "rfid_CR14.h"
 #include <Wire.h>
 
 RFID::RFID(byte addr) {
