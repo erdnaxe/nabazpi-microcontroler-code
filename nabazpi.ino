@@ -1,6 +1,6 @@
 #include <Pushbutton.h>
 #include <Wire.h>
-#include "RFID.h"
+#include "RFID_CR14.h"
 
 #define PIN_HEAD_BTN 2  // must support interrupt
 #define PIN_VOL_WHEEL A7
