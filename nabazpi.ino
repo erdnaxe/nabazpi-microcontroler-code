@@ -8,6 +8,8 @@
 Pushbutton headButton(PIN_HEAD_BTN);
 RFID rfid(0x50);
 
+unsigned int volumeSensorOldValue = 0;
+
 void setup() {
   Serial.begin(9600);
   Wire.begin();
@@ -16,14 +18,16 @@ void setup() {
 
 void loop() {
   // Volume control wheel
-  int volumeSensorValue = analogRead(PIN_VOL_WHEEL);
+  unsigned int volumeSensorValue = analogRead(PIN_VOL_WHEEL);
+  if (abs(volumeSensorValue-volumeSensorOldValue) > 5) {
+    volumeSensorOldValue = volumeSensorValue;
+    Serial.print("[VOL] Volume wheel value : ");
+    Serial.println(volumeSensorValue);
+  }
 
   // Head button
   if (headButton.getSingleDebouncedPress()) {
     Serial.println("[BTN] Button pushed");
-    
-    Serial.print("[VOL] Volume wheel value : ");
-    Serial.println(volumeSensorValue);
   }
 
   // RFID reader
